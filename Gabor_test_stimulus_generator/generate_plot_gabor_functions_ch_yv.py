@@ -52,7 +52,7 @@ if __name__ == '__main__':
     W = 224 * scale_k2  # Width of the canvas (pixels)
     H = 224 * scale_k2  # Height of the canvas (pixels)
     R = 0.5 * scale_k1 * scale_k2  # Radius of the Gabor stimulus (degrees)
-    rho = 8 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
+    rho = 2 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
     O = 0  # Orientation of the Gabor stimulus (degrees)
     C_b = 0.5  # Luminance of the background
     contrast = 1  # Contrast of the gabor
