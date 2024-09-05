@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 Luminance_min = 1e-4
 
 
-def generate_gabor_patch(W, H, R, rho, O, C_b, contrast, ppd=64):
-    C_b = 255 * C_b
-
+def generate_gabor_patch(W, H, R, rho, O, L_b, contrast, ppd):
     x = np.linspace(-W // 2, W // 2, W)
     y = np.linspace(-H // 2, H // 2, H)
     X, Y = np.meshgrid(x, y)
@@ -18,19 +16,11 @@ def generate_gabor_patch(W, H, R, rho, O, C_b, contrast, ppd=64):
 
     gaussian = np.exp(-0.5 * (X_rot ** 2 + Y_rot ** 2) / (ppd * R) ** 2)
     sinusoid = np.sin(2 * np.pi * rho * X_rot / ppd) * contrast * C_b
-    gabor = gaussian * sinusoid + C_b
+    T_vid = gaussian * sinusoid + C_b
+    R_vid = np.ones([W, H]) * L_b
 
     gabor[gabor < Luminance_min] = Luminance_min
     return gabor
-
-    # # 将Gabor patch绘制出来
-    # plt.figure(figsize=(10, 10))
-    # plt.imshow(gabor, cmap='gray', extent=[-W // 2, W // 2, -H // 2, H // 2])
-    # plt.title('Gabor Patch')
-    # plt.xlabel('X (pixels)')
-    # plt.ylabel('Y (pixels)')
-    # plt.colorbar()
-    # plt.show()
 
 def plot_gabor(gabor):
     """

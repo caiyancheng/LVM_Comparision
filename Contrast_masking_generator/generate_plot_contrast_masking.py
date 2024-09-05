@@ -21,23 +21,18 @@ def generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, contrast_test, p
     S = img_mask + img_target
     return S
 
-
 def generate_contrast_masking(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd):
     T_vid = generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd)
     R_vid = generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, 0, ppd)
-    gabor[gabor < Luminance_min] = Luminance_min
-    return gabor
+    return T_vid, R_vid
 
-def plot_gabor(gabor):
-    """
-    Plot the Gabor stimulus.
-
-    Parameters:
-    gabor (numpy.ndarray): The Gabor stimulus to plot
-    """
-    plt.figure(figsize=(4,4))
-    plt.imshow(gabor, cmap='gray', vmin=0, vmax=255, extent=(-W // 2, W // 2, -H // 2, H // 2))
-    plt.title(f'Radius = {R} degree, \n S_freq = {rho} cpd, Contrast = {contrast}, \n ppd = {ppd}, W = {W}, H = {H}')
+def plot_contrast_masking(T_vid, R_vid):
+    T_vid_c = display_encode_tool.L2C(T_vid) * 255
+    # R_vid_c = display_encode_tool.L2C(R_vid) * 255
+    plt.figure(figsize=(4, 4))
+    plt.imshow(T_vid_c, cmap='gray', vmin=0, vmax=255, extent=(-W // 2, W // 2, -H // 2, H // 2))
+    plt.title(
+        f'contrast_mask = {contrast_mask}, contrast_test = {contrast_test}, \n rho = {rho} cpd, L_b = {L_b} $cd/m^2$, \n ppd = {ppd}, W = {W}, H = {H}')
     plt.axis('off')
     plt.tight_layout()
     plt.show()
@@ -49,13 +44,13 @@ if __name__ == '__main__':
     # 示例参数
     W = 224 * scale_k2  # Width of the canvas (pixels)
     H = 224 * scale_k2  # Height of the canvas (pixels)
-    R = 0.1 * scale_k1 * scale_k2  # Radius of the Gabor stimulus (degrees)
-    rho = 2 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
+    rho = 4 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
     O = 0  # Orientation of the Gabor stimulus (degrees)
-    C_b = 0.5  # Luminance of the background
-    contrast = 1  # Contrast of the gabor
+    L_b = 100  # Luminance of the background
+    contrast_mask = 0.5
+    contrast_test = 0.01
     ppd = 60 / scale_k1
 
-    gabor_stimulus = generate_gabor_patch(W, H, R, rho, O, C_b, contrast, ppd)
-    plot_gabor(gabor_stimulus)
+    T_vid, R_vid = generate_contrast_masking(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd)
+    plot_contrast_masking(T_vid, R_vid)
 
