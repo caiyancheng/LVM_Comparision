@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from Gabor_test_stimulus_generator.generate_plot_gabor_functions import generate_gabor_patch
+from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
 import torch.nn.functional as F
 import pandas as pd
 import json
@@ -9,6 +9,8 @@ import os
 import math
 torch.hub.set_dir(r'E:\Torch_hub')
 import matplotlib.pyplot as plt
+from display_encoding import display_encode
+display_encode_tool = display_encode(400, 2.2)
 
 # Only test cpd right now
 # Dinov2 input: Batch, Channel, H, W // Value = [0,1]
@@ -29,7 +31,7 @@ default_rho = 8
 contrast_list = np.logspace(np.log10(0.001), np.log10(1), 20)
 default_O = 0
 default_contrast = 1
-default_C_b = 0.5
+default_L_b = 100
 default_ppd = 60
 
 csv_data = {}
@@ -56,7 +58,6 @@ json_plot_data['intermediate_feature_L1_similarity_matrix'] = []
 json_plot_data['intermediate_feature_L2_similarity_matrix'] = []
 json_plot_data['intermediate_feature_cos_similarity_matrix'] = []
 
-reference_pattern = default_C_b * torch.ones([1, 3, default_H, default_W])
 for backbone_name in tqdm(all_backbone_list):
     json_plot_data['backbone_name'].append(backbone_name)
     plot_radius_matrix = np.zeros([len(R_list), len(contrast_list)])
@@ -73,9 +74,6 @@ for backbone_name in tqdm(all_backbone_list):
     backbone_model.eval()
     backbone_model.cuda()
 
-    reference_feature = backbone_model(reference_pattern.cuda())
-    reference_feature_intermediate = backbone_model.get_intermediate_layers(reference_pattern.cuda(), n=4)
-    reference_feature_intermediate = torch.stack(reference_feature_intermediate)
     for R_index in range(len(R_list)):
         R_value = R_list[R_index]
         A_value = Area_list[R_index]
@@ -88,13 +86,18 @@ for backbone_name in tqdm(all_backbone_list):
             plot_radius_matrix[R_index, contrast_index] = R_value
             plot_area_matrix[R_index, contrast_index] = A_value
             plot_contrast_matrix[R_index, contrast_index] = contrast_value
-            gabor_test = generate_gabor_patch(W=default_W, H=default_H, R=R_value, rho=default_rho, O=default_O,
-                                              C_b=default_C_b, contrast=contrast_value, ppd=default_ppd)
-            gabor_test = torch.tensor(gabor_test, dtype=torch.float32)[None, None, ...] / 255
-            gabor_test = gabor_test.expand(-1, 3, -1, -1).cuda()
-            test_feature = backbone_model(gabor_test)
-            test_feature_intermediate = backbone_model.get_intermediate_layers(gabor_test, n=4)
+            T_vid, R_vid = generate_gabor_patch(W=default_W, H=default_H, R=R_value, rho=default_rho, O=default_O,
+                                              L_b=default_L_b, contrast=contrast_value, ppd=default_ppd, color_direction='ach')
+            T_vid_c = display_encode_tool.L2C(T_vid)
+            R_vid_c = display_encode_tool.L2C(R_vid)
+            T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
+            R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
+            test_feature = backbone_model(T_vid_ct)
+            test_feature_intermediate = backbone_model.get_intermediate_layers(T_vid_ct, n=4)
             test_feature_intermediate = torch.stack(test_feature_intermediate)
+            reference_feature = backbone_model(R_vid_ct)
+            reference_feature_intermediate = backbone_model.get_intermediate_layers(R_vid_ct, n=4)
+            reference_feature_intermediate = torch.stack(reference_feature_intermediate)
 
             L1_similarity = float(torch.norm(test_feature - reference_feature, p=1).cpu())
             L1_similarity_intermediate = float(

@@ -3,7 +3,6 @@ import json
 import numpy as np
 import itertools
 import os
-
 ppd = 60
 
 save_root_path = 'new_contour_plots/lpips/different_area'

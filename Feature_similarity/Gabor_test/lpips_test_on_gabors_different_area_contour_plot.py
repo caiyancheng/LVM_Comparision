@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from Gabor_test_stimulus_generator.generate_plot_gabor_functions import generate_gabor_patch
+from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
 import torch.nn.functional as F
 import pandas as pd
 import json
@@ -10,6 +10,8 @@ import os
 import math
 
 torch.hub.set_dir(r'E:\Torch_hub')
+from display_encoding import display_encode
+display_encode_tool = display_encode(400, 2.2)
 import matplotlib.pyplot as plt
 
 # Only test cpd right now
@@ -31,7 +33,7 @@ default_rho = 8
 contrast_list = np.logspace(np.log10(0.001), np.log10(1), 20)
 default_O = 0
 default_contrast = 1
-default_L_b = 0.5
+default_L_b = 100
 default_ppd = 60
 
 csv_data = {}
@@ -71,15 +73,18 @@ for R_index in range(len(R_list)):
         plot_radius_matrix[R_index, contrast_index] = R_value
         plot_area_matrix[R_index, contrast_index] = A_value
         plot_contrast_matrix[R_index, contrast_index] = contrast_value
-        gabor_test = generate_gabor_patch(W=default_W, H=default_H, R=R_value, rho=default_rho, O=default_O,
-                                          C_b=default_L_b, contrast=contrast_value, ppd=default_ppd)
-        gabor_test = torch.tensor(gabor_test, dtype=torch.float32)[None, None, ...] / 255
-        gabor_test = gabor_test.expand(-1, 3, -1, -1)
-        norm_gabor_test = (gabor_test - 0.5) * 2
+        T_vid, R_vid = generate_gabor_patch(W=default_W, H=default_H, R=R_value, rho=default_rho, O=default_O,
+                                          L_b=default_L_b, contrast=contrast_value, ppd=default_ppd, color_direction='ach')
+        T_vid_c = display_encode_tool.L2C(T_vid)
+        R_vid_c = display_encode_tool.L2C(R_vid)
+        T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...]
+        R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...]
+        norm_T_vid_ct = (T_vid_ct - 0.5) * 2
+        norm_R_vid_ct = (R_vid_ct - 0.5) * 2
 
-        loss_fn_alex_value = float(loss_fn_alex(norm_reference_pattern, norm_gabor_test).cpu())
-        loss_fn_vgg_value = float(loss_fn_vgg(norm_reference_pattern, norm_gabor_test).cpu())
-        loss_fn_squeeze_value = float(loss_fn_squeeze(norm_reference_pattern, norm_gabor_test).cpu())
+        loss_fn_alex_value = float(loss_fn_alex(norm_T_vid_ct, norm_R_vid_ct).cpu())
+        loss_fn_vgg_value = float(loss_fn_vgg(norm_T_vid_ct, norm_R_vid_ct).cpu())
+        loss_fn_squeeze_value = float(loss_fn_squeeze(norm_T_vid_ct, norm_R_vid_ct).cpu())
 
         csv_data['loss_fn_alex'].append(loss_fn_alex_value)
         plot_loss_fn_alex_matrix[R_index, contrast_index] = loss_fn_alex_value

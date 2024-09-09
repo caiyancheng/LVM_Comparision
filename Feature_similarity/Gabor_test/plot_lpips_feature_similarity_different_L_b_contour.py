@@ -3,7 +3,6 @@ import json
 import numpy as np
 import itertools
 import os
-
 ppd = 60
 
 save_root_path = 'new_contour_plots/lpips/different_luminance'
@@ -18,7 +17,7 @@ plot_contrast_matrix = np.array(plot_json_data['contrast_matrix'])[0]
 plot_loss_fn_alex_matrix = np.array(plot_json_data['loss_fn_alex_matrix'])[0]
 plot_loss_fn_vgg_matrix = np.array(plot_json_data['loss_fn_vgg_matrix'])[0]
 plot_loss_fn_squeeze_matrix = np.array(plot_json_data['loss_fn_squeeze_matrix'])[0]
-x_luminance_ticks = [1, 10, 100]
+x_luminance_ticks = [0.1, 1, 10, 100, 200]
 y_contrast_ticks = [0.001, 0.01, 0.1, 1]
 y_sensitivity_ticks = [1, 10, 100, 1000]
 

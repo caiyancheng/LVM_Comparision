@@ -3,6 +3,7 @@ import json
 import numpy as np
 import itertools
 import os
+from tqdm import tqdm
 
 ppd = 60
 
@@ -23,10 +24,10 @@ plot_intermediate_feature_L1_similarity_matrix_list = plot_json_data['intermedia
 plot_intermediate_feature_L2_similarity_matrix_list = plot_json_data['intermediate_feature_L2_similarity_matrix']
 plot_intermediate_feature_cos_similarity_matrix_list = plot_json_data['intermediate_feature_cos_similarity_matrix']
 x_rho_ticks = [0.5, 1, 2, 4, 8, 16, 32]
-y_contrast_ticks = [0.001, 0.01, 0.1, 1]
-y_sensitivity_ticks = [1, 10, 100, 1000]
+y_contrast_ticks = [0.001, 0.01, 0.1, 0.2]
+y_sensitivity_ticks = [5, 10, 100, 1000]
 
-for backbone_index in range(len(backbone_name_list)):
+for backbone_index in tqdm(range(len(backbone_name_list))):
     fig, axs = plt.subplots(4, 3, figsize=(15, 10))
     # fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 5))
     backbone_name = backbone_name_list[backbone_index]

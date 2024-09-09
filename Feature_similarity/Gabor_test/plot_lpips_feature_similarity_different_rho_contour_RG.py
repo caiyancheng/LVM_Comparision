@@ -19,8 +19,8 @@ plot_loss_fn_alex_matrix = np.array(plot_json_data['loss_fn_alex_matrix'])[0]
 plot_loss_fn_vgg_matrix = np.array(plot_json_data['loss_fn_vgg_matrix'])[0]
 plot_loss_fn_squeeze_matrix = np.array(plot_json_data['loss_fn_squeeze_matrix'])[0]
 x_rho_ticks = [0.5, 1, 2, 4, 8, 16, 32]
-y_contrast_ticks = [0.001, 0.01, 0.1, 1]
-y_sensitivity_ticks = [1, 10, 100, 1000]
+y_contrast_ticks = [0.001, 0.01, 0.1, 0.2]
+y_sensitivity_ticks = [5, 10, 100, 1000]
 
 fig, axs = plt.subplots(2, 3, figsize=(15, 7))
 plot_fn_list = [plot_loss_fn_alex_matrix,

@@ -60,10 +60,10 @@ if __name__ == '__main__':
     # 示例参数
     W = 224 * scale_k2  # Width of the canvas (pixels)
     H = 224 * scale_k2  # Height of the canvas (pixels)
-    freq_band = 2 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
+    freq_band = 4 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
     L_b = 100  # Luminance of the background
     C_b = display_encode_tool.L2C(L_b)
-    contrast = 0.02  # Contrast of the gabor
+    contrast = 0.5  # Contrast of the gabor
     ppd = 60 / scale_k1
 
     T_vid, R_vid = generate_band_lim_noise(W, H, freq_band, L_b, contrast, ppd)
