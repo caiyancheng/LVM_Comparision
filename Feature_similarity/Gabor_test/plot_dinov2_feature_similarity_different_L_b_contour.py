@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import matplotlib.pyplot as plt
 import json
 import numpy as np

@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import matplotlib.pyplot as plt
 import json
 import numpy as np
@@ -9,7 +11,7 @@ ppd = 60
 save_root_path = 'new_contour_plots/lpips/different_rho'
 os.makedirs(save_root_path, exist_ok=True)
 
-json_data_path = rf'data_logs/lpips_test_on_gabors_different_rho_contour_plot_ppd_{ppd}_final.json'
+json_data_path = rf'new_data_logs/lpips/different_rho/lpips_test_on_gabors_different_rho_contour_plot_ppd_{ppd}_final.json'
 with open(json_data_path, 'r') as fp:
     plot_json_data = json.load(fp)
 

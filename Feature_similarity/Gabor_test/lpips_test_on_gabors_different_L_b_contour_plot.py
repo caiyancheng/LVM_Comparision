@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import numpy as np
 import torch
 from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch

@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import numpy as np
 import torch
 from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
@@ -83,8 +85,6 @@ for backbone_name in tqdm(all_backbone_list):
             R_vid_c = display_encode_tool.L2C(R_vid)
             T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
             R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
-            T_vid_ct = T_vid_ct.expand(-1, 3, -1, -1).cuda()
-            R_vid_ct = R_vid_ct.expand(-1, 3, -1, -1).cuda()
             test_feature = backbone_model(T_vid_ct)
             test_feature_intermediate = backbone_model.get_intermediate_layers(T_vid_ct, n=4)
             test_feature_intermediate = torch.stack(test_feature_intermediate)

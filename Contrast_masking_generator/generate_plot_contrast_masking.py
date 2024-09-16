@@ -47,7 +47,7 @@ if __name__ == '__main__':
     rho = 4 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
     O = 0  # Orientation of the Gabor stimulus (degrees)
     L_b = 100  # Luminance of the background
-    contrast_mask = 0.5
+    contrast_mask = 0.005
     contrast_test = 0.01
     ppd = 60 / scale_k1
 

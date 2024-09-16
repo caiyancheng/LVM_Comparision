@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import numpy as np
 import torch
 from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
@@ -63,10 +65,8 @@ for rho_index in range(len(rho_list)):
                                           L_b=default_L_b, contrast=contrast_value, ppd=default_ppd, color_direction='ach')
         T_vid_c = display_encode_tool.L2C(T_vid)
         R_vid_c = display_encode_tool.L2C(R_vid)
-        T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32)[None, None, ...]
-        R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32)[None, None, ...]
-        T_vid_ct = T_vid_ct.expand(-1, 3, -1, -1)
-        R_vid_ct = R_vid_ct.expand(-1, 3, -1, -1)
+        T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...]
+        R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...]
         norm_T_vid_ct = (T_vid_ct - 0.5) * 2
         norm_R_vid_ct = (R_vid_ct - 0.5) * 2
 
@@ -82,8 +82,7 @@ for rho_index in range(len(rho_list)):
         plot_loss_fn_squeeze_matrix[rho_index, contrast_index] = loss_fn_squeeze_value
 
         df = pd.DataFrame(csv_data)
-        df.to_csv(rf'data_logs/lpips_test_on_gabors_different_rho_contour_plot_ppd_{default_ppd}_temporary.csv',
-                  index=False)
+        df.to_csv(os.path.join(save_root_path, 'lpips_test_on_gabors_different_rho_contour_plot_ppd_{default_ppd}_temporary.csv'), index=False)
 json_plot_data['rho_matrix'].append(plot_rho_matrix.tolist())
 json_plot_data['contrast_matrix'].append(plot_contrast_matrix.tolist())
 json_plot_data['loss_fn_alex_matrix'].append(plot_loss_fn_alex_matrix.tolist())

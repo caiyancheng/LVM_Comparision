@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import numpy as np
 import torch
 from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
@@ -10,7 +12,6 @@ torch.hub.set_dir(r'E:\Torch_hub')
 import matplotlib.pyplot as plt
 from display_encoding import display_encode
 display_encode_tool = display_encode(400, 2.2)
-
 # Only test cpd right now
 # Dinov2 input: Batch, Channel, H, W // Value = [0,1]
 save_root_path = 'new_data_logs/dinov2/different_luminance'

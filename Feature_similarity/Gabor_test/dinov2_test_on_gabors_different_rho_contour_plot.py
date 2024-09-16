@@ -1,3 +1,5 @@
+import sys
+sys.path.append('E:\Py_codes\LVM_Comparision')
 import numpy as np
 import torch
 from Gabor_test_stimulus_generator.generate_plot_gabor_functions_new import generate_gabor_patch
@@ -11,7 +13,6 @@ display_encode_tool = display_encode(400, 2.2)
 
 torch.hub.set_dir(r'E:\Torch_hub')
 import matplotlib.pyplot as plt
-
 # Only test cpd right now
 # Dinov2 input: Batch, Channel, H, W // Value = [0,1]
 save_root_path = 'new_data_logs/dinov2/different_rho'
@@ -23,7 +24,6 @@ all_backbone_list = ['dinov2_vits14', 'dinov2_vitb14', 'dinov2_vitl14', 'dinov2_
 default_W = 224
 default_H = 224
 default_R = 1
-# rho_list = [0.5, 1, 2, 4, 8, 16, 32]
 rho_list = np.logspace(np.log10(0.5), np.log10(32), 20)
 contrast_list = np.logspace(np.log10(0.001), np.log10(1), 20)
 default_O = 0
@@ -83,8 +83,6 @@ for backbone_name in tqdm(all_backbone_list):
             R_vid_c = display_encode_tool.L2C(R_vid)
             T_vid_ct = torch.tensor(T_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
             R_vid_ct = torch.tensor(R_vid_c, dtype=torch.float32).permute(2, 0, 1)[None, ...].cuda()
-            T_vid_ct = T_vid_ct.expand(-1, 3, -1, -1).cuda()
-            R_vid_ct = R_vid_ct.expand(-1, 3, -1, -1).cuda()
             test_feature = backbone_model(T_vid_ct)
             test_feature_intermediate = backbone_model.get_intermediate_layers(T_vid_ct, n=4)
             test_feature_intermediate = torch.stack(test_feature_intermediate)
