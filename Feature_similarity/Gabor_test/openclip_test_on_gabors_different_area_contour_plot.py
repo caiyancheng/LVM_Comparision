@@ -22,8 +22,12 @@ display_encode_tool = display_encode(400, 2.2)
 # Dino input: Batch, Channel, H, W // Value = [0,1]
 save_root_path = 'new_data_logs/openclip/different_area'
 os.makedirs(save_root_path, exist_ok=True)
-all_clip_model_list = open_clip.list_pretrained()
-test_continue = True
+# all_clip_model_list = open_clip.list_pretrained()
+all_clip_model_list = [('RN50', 'openai'), ('RN50', 'yfcc15m'), ('RN101', 'openai'), ('RN101', 'yfcc15m'),
+                       ('ViT-B-32', 'openai'), ('ViT-B-32', 'laion2b_s34b_b79k'), ('ViT-B-16', 'openai'), ('ViT-B-16', 'laion2b_s34b_b88k'),
+                       ('ViT-L-14', 'openai'), ('ViT-L-14', 'laion2b_s32b_b82k'), ('convnext_base_w', 'laion2b_s13b_b82k'), ('convnext_base_w', 'laion2b_s13b_b82k_augreg'),
+                       ('convnext_large_d', 'laion2b_s26b_b102k_augreg'), ('convnext_xxlarge', 'laion2b_s34b_b82k_augreg')]
+test_continue = False
 continue_least_model_epoch = 98
 
 default_W = 224
@@ -75,7 +79,9 @@ for clip_model_index in tqdm(range(len(all_clip_model_list))):
     plot_final_feature_L2_similarity_matrix = np.zeros([len(R_list), len(contrast_list)])
     plot_final_feature_cos_similarity_matrix = np.zeros([len(R_list), len(contrast_list)])
 
-    if clip_model_index > continue_least_model_epoch:
+    if test_continue and (clip_model_index <= continue_least_model_epoch):
+        print(f'Skip the CLIP Model - {clip_model_name} - {clip_model_trainset}')
+    else:
         model, _, preprocess = open_clip.create_model_and_transforms(clip_model_name, pretrained=clip_model_trainset, cache_dir=r'E:\Openclip_cache') #preprocess的input图片大小应该是H,W,3
         model.eval()
         model.cuda()

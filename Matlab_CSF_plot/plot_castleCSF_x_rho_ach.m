@@ -24,4 +24,12 @@ xlim([min(x_ticks), max(x_ticks)]);
 ylim([min(y_ticks), max(y_ticks)]);
 xlabel('Spatial Frequency (cpd)', 'FontSize', font_size);
 ylabel('Sensitivity', 'FontSize', font_size);
-title(['Luminance = ' num2str(luminance) ' nits, Area = ' num2str(area) ' degree^2']);
+
+data = struct('rho_list', spatial_frequency_list, 'sensitivity_list', sensitivity_list);
+jsonStr = jsonencode(data);
+fileID = fopen('castleCSF_rho_sensitivity_data.json', 'w');
+if fileID == -1
+    error('Cannot open file for writing.');
+end
+fprintf(fileID, '%s', jsonStr);
+fclose(fileID);

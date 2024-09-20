@@ -54,7 +54,7 @@ for clip_model_index in tqdm(range(len(clip_model_name_list))):
             ax.set_yticks(y_contrast_ticks)
             ax.set_ylabel('Contrast')
         else:
-            cs = ax.contour(plot_area_matrix, 1 / plot_contrast_matrix, plot_similarity_list[index - 6], levels=20)
+            cs = ax.contour(plot_area_matrix, 1 / plot_contrast_matrix, plot_similarity_list[index - 3], levels=20)
             ax.set_title(title_name_list[index - 6])
             ax.set_yticks(y_sensitivity_ticks)
             ax.set_ylabel('Sensitivity')

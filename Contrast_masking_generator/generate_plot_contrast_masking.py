@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from display_encoding import display_encode
 
 Luminance_min = 1e-4
-display_encode_tool = display_encode(400, 2.2)
+display_encode_tool = display_encode(400)
 
 def generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd):
     size_deg = np.array([W, H]) / ppd
@@ -24,10 +24,12 @@ def generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, contrast_test, p
 def generate_contrast_masking(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd):
     T_vid = generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd)
     R_vid = generate_masking_stimulus(W, H, rho, O, L_b, contrast_mask, 0, ppd)
+    T_vid[T_vid < 0] = 0
+    R_vid[R_vid < 0] = 0
     return T_vid, R_vid
 
 def plot_contrast_masking(T_vid, R_vid):
-    T_vid_c = display_encode_tool.L2C(T_vid) * 255
+    T_vid_c = display_encode_tool.L2C_sRGB(T_vid) * 255
     # R_vid_c = display_encode_tool.L2C(R_vid) * 255
     plt.figure(figsize=(4, 4))
     plt.imshow(T_vid_c, cmap='gray', vmin=0, vmax=255, extent=(-W // 2, W // 2, -H // 2, H // 2))
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     O = 0  # Orientation of the Gabor stimulus (degrees)
     L_b = 100  # Luminance of the background
     contrast_mask = 0.005
-    contrast_test = 0.01
+    contrast_test = 0.5
     ppd = 60 / scale_k1
 
     T_vid, R_vid = generate_contrast_masking(W, H, rho, O, L_b, contrast_mask, contrast_test, ppd)

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVPR 2025 Results</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        img {
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gabor Tests</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>NN Model Name</th>
+                <th>Area</th>
+                <th>Luminance</th>
+                <th>Spatial Frequency</th>
+                <th>Spatial Frequency (RG)</th>
+                <th>Spatial Frequency (YV)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>dino_resnet50</td>
+                <td><img src="Gabor_test/new_contour_plots/dino/different_area/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dino/different_luminance/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dino/different_rho/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dino/different_rho_RG/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dino/different_rho_YV/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+            </tr>
+            <tr></tr>
+                <td>dinov2_vitb14</td>
+                <td><img src="Gabor_test/new_contour_plots/dinov2/different_area/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dinoV2/different_luminance/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dinov2/different_rho/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dinov2/different_rho_RG/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/dinov2/different_rho_YV/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+            </tr>
+            <tr></tr>
+                <td>lpips</td>
+                <td><img src="Gabor_test/new_contour_plots/lpips/different_area/LPIPS - AlexNet.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/lpips/different_luminance/LPIPS - AlexNet.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/lpips/different_rho/LPIPS - AlexNet.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/lpips/different_rho_RG/LPIPS - AlexNet.png"></td>
+                <td><img src="Gabor_test/new_contour_plots/lpips/different_rho_YV/LPIPS - AlexNet.png"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h1>Contrast Masking</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>NN Model Name</th>
+                <th>Contrast Masking - Gabor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>dino_resnet50</td>
+                <td><img src="Contrast_masking_test/new_contour_plots/dino/different_c/dino_resnet50/dino_resnet50 - cos similarity - final feature.png"></td>
+            </tr>
+            <tr></tr>
+                <td>dino_resnet50</td>
+                <td><img src="Contrast_masking_test/new_contour_plots/dinov2/different_c/dinov2_vitb14/dinov2_vitb14 - cos similarity - final feature.png"></td>
+            </tr>
+            <tr></tr>
+                <td>lpips</td>
+                <td><img src="Contrast_masking_test/new_contour_plots/lpips/different_c/LPIPS - AlexNet.png"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

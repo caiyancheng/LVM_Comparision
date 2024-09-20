@@ -4,7 +4,7 @@ from display_encoding import display_encode
 from Color_space_Transform import *
 
 Luminance_min = 1e-4
-display_encode_tool = display_encode(400, 2.2)
+display_encode_tool = display_encode(400)
 dkl_ratios = np.array([1, 0.610649, 4.203636])
 white_point_d65 = np.array([0.9505, 1.0000, 1.0888])
 
@@ -36,8 +36,8 @@ def generate_gabor_patch(W, H, R, rho, O, L_b, contrast, ppd, color_direction):
     return T_vid_rgb, R_vid_rgb
 
 def plot_gabor(T_vid, R_vid):
-    T_vid_c = display_encode_tool.L2C(T_vid)
-    R_vid_c = display_encode_tool.L2C(R_vid)
+    T_vid_c = display_encode_tool.L2C_sRGB(T_vid)
+    R_vid_c = display_encode_tool.L2C_sRGB(R_vid)
     plt.figure(figsize=(4, 4))
     plt.imshow(T_vid_c, extent=(-W // 2, W // 2, -H // 2, H // 2))
     plt.title(f'Radius = {R} degree, \n S_freq = {rho} cpd, Contrast = {contrast}, \n ppd = {ppd}, W = {W}, H = {H}')
@@ -52,13 +52,13 @@ if __name__ == '__main__':
     # 示例参数
     W = 224 * scale_k2  # Width of the canvas (pixels)
     H = 224 * scale_k2  # Height of the canvas (pixels)
-    R = 0.5 * scale_k1 * scale_k2  # Radius of the Gabor stimulus (degrees)
-    rho = 2 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
+    R = 0.1 * scale_k1 * scale_k2  # Radius of the Gabor stimulus (degrees)
+    rho = 8 / scale_k1 / scale_k2  # Spatial frequency of the Gabor stimulus (cycles per degree)
     O = 0  # Orientation of the Gabor stimulus (degrees)
-    L_b = 200 # Luminance of the background
+    L_b = 100 # Luminance of the background
     contrast = 0.2 # Contrast of the gabor
     ppd = 60 / scale_k1
-    color_direction = 'yv'
+    color_direction = 'ach'
 
     T_vid, R_vid = generate_gabor_patch(W, H, R, rho, O, L_b, contrast, ppd, color_direction)
     plot_gabor(T_vid, R_vid)

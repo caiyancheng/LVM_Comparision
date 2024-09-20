@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from display_encoding import display_encode
 
 Luminance_min = 1e-4
-display_encode_tool = display_encode(400, 2.2)
+display_encode_tool = display_encode(400)
 
 def create_cycdeg_image(im_size, pix_per_deg):
     """
@@ -44,7 +44,7 @@ def generate_band_lim_noise(W, H, freq_band, L_b, contrast, ppd):
     return T_vid, R_vid
 
 def plot_band_lim_noise(T_vid, R_vid):
-    T_vid_c = display_encode_tool.L2C(T_vid) * 255
+    T_vid_c = display_encode_tool.L2C_sRGB(T_vid) * 255
     # R_vid_c = display_encode_tool.L2C(R_vid) * 255
     plt.figure(figsize=(4,4))
     plt.imshow(T_vid_c, cmap='gray', vmin=0, vmax=255, extent=(-W // 2, W // 2, -H // 2, H // 2))
@@ -62,7 +62,6 @@ if __name__ == '__main__':
     H = 224 * scale_k2  # Height of the canvas (pixels)
     freq_band = 4 / scale_k1 / scale_k2
     L_b = 100  # Luminance of the background
-    C_b = display_encode_tool.L2C(L_b)
     contrast = 0.5  # Contrast of the gabor
     ppd = 60 / scale_k1
 
